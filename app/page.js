@@ -488,11 +488,11 @@ export default function Home() {
                 history programmatically
               </li>
               <li>
-                <span className="check">✓</span>Simple API keys, generous
-                free tier for early builders
+                <span className="check">✓</span>Open access during beta —
+                no API key required yet
               </li>
             </ul>
-            <a className="btn btn--primary" href="#">
+            <a className="btn btn--primary" href="/docs">
               Read the docs →
             </a>
           </div>
