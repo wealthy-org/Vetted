@@ -1,3 +1,5 @@
+import GetStartedButton from "./GetStartedButton";
+
 const heroCodeHtml = `
   <div class="dots"><span></span><span></span><span></span></div>
   <span class="kw">import</span> { Vetted } <span class="kw">from</span> <span class="str">'vetted-sdk'</span><br><br>
@@ -40,9 +42,9 @@ export default function Home() {
               <a href="#api">API</a>
               <a href="#">Pricing</a>
             </div>
-            <a className="btn btn--primary" href="/dashboard">
+            <GetStartedButton className="btn btn--primary">
               Get Started →
-            </a>
+            </GetStartedButton>
           </nav>
 
           <section className="hero">
@@ -67,9 +69,9 @@ export default function Home() {
                 money — all in one dashboard.
               </p>
               <div className="hero__cta-row">
-                <a className="btn btn--primary" href="/dashboard">
+                <GetStartedButton className="btn btn--primary">
                   Get Started →
-                </a>
+                </GetStartedButton>
                 <span className="hero__mini-note">
                   No credit card · <b>Just connect Phantom</b>
                 </span>
@@ -577,9 +579,9 @@ export default function Home() {
             </div>
           </div>
           <br />
-          <a className="btn btn--primary" href="/dashboard" style={{ position: "relative" }}>
+          <GetStartedButton className="btn btn--primary" style={{ position: "relative" }}>
             Get Started →
-          </a>
+          </GetStartedButton>
         </div>
       </section>
 
