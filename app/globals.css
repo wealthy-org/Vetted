@@ -350,7 +350,19 @@ footer { background: var(--ink); color:#9a9ab8; padding: 56px 0 32px; }
 .dp__avatar { width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, var(--purple), var(--green)); color:#fff; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center; flex:none; }
 .dp__coin { width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, #ffb86b, #ff6b8b); color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; flex:none; }
 .dp__token { font-weight:700; display:block; line-height:1.3; }
-.dp__chain { font-size:11px; color:var(--gray); text-transform:capitalize; }
+.dp__chain {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--gray);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-top: 2px;
+}
 .dp__muted { color:var(--gray); }
 .dp__add { background: var(--purple-soft); color:var(--purple); border:none; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:700; cursor:pointer; transition:all .15s ease; }
 .dp__add:hover { background: var(--purple); color:#fff; }
