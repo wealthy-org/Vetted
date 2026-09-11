@@ -40,7 +40,6 @@ export default function Home() {
               <a href="#features">Features</a>
               <a href="#testi">Why Us</a>
               <a href="#api">API</a>
-              <a href="#">Pricing</a>
             </div>
             <GetStartedButton className="btn btn--primary">
               Get Started →
@@ -602,7 +601,6 @@ export default function Home() {
               <h4>Product</h4>
               <a href="#features">Features</a>
               <a href="#how">How it works</a>
-              <a href="#">Pricing</a>
             </div>
             <div className="footer__col">
               <h4>Resources</h4>
