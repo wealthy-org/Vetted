@@ -1,4 +1,17 @@
 import GetStartedButton from "./GetStartedButton";
+import StatCounter from "./StatCounter";
+import { sql } from "@/lib/db";
+
+export const dynamic = "force-dynamic";
+
+// Real facts about the codebase, not vanity numbers:
+// - lib/dexscreener.js, lib/goplus.js, lib/rss.js — the 3 external data
+//   sources actually integrated (see README for X/Twitter's live-data
+//   caveat).
+// - lib/risk.js's computeRiskScore() reads exactly 5 inputs: liquidity,
+//   taxBuy, taxSell, isHoneypot, holderCount.
+const DATA_SOURCES_COUNT = 3;
+const RISK_SIGNALS_COUNT = 5;
 
 const heroCodeHtml = `
   <div class="dots"><span></span><span></span><span></span></div>
@@ -22,7 +35,13 @@ const apiPanelHtml = `
   }
 `;
 
-export default function Home() {
+async function getTokensTrackedCount() {
+  const rows = await sql`select count(*)::int as n from tokens`;
+  return rows[0]?.n ?? 0;
+}
+
+export default async function Home() {
+  const tokensTracked = await getTokensTrackedCount();
   return (
     <>
       <div className="announce">
@@ -156,16 +175,16 @@ export default function Home() {
       <section className="strip">
         <div className="wrap strip__inner">
           <div className="strip__stat">
-            <b>5+</b>
+            <StatCounter value={DATA_SOURCES_COUNT} suffix="+" />
             <span>on-chain & social data sources cross-checked</span>
           </div>
           <div className="strip__stat">
-            <b>&lt;10s</b>
-            <span>from tweet detected to risk score delivered</span>
+            <StatCounter value={tokensTracked} suffix="+" />
+            <span>tokens scored so far</span>
           </div>
           <div className="strip__stat">
-            <b>12</b>
-            <span>signals evaluated per call</span>
+            <StatCounter value={RISK_SIGNALS_COUNT} />
+            <span>signals evaluated per risk score</span>
           </div>
         </div>
       </section>

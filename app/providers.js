@@ -15,9 +15,20 @@ export default function Providers({ children }) {
   );
   const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
 
+  // wallet-adapter console.errors every wallet error by default, including
+  // the user simply clicking "Cancel" in the Phantom popup — that's normal,
+  // expected behavior handled gracefully in lib/useWalletAuth.js, not a
+  // bug worth logging. Only log genuinely unexpected error types.
+  function onWalletError(error) {
+    if (error?.name === "WalletSignMessageError" || error?.name === "WalletNotConnectedError") {
+      return;
+    }
+    console.error(error);
+  }
+
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
+      <WalletProvider wallets={wallets} autoConnect onError={onWalletError}>
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
