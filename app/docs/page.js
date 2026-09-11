@@ -4,7 +4,7 @@ export const metadata = {
   title: "API Docs — Vetted",
 };
 
-const BASE_URL = "https://vetted-peach.vercel.app";
+const BASE_URL = "http://getvetted.xyz/";
 
 const ENDPOINTS = [
   {
