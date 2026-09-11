@@ -420,15 +420,17 @@ export default function Home() {
       <section className="testi" id="testi">
         <div className="wrap testi__inner">
           <div className="testi__mark">
-            <div className="kicker">The problem</div>
-            <div className="big">
-              3 tabs.
-              <br />
-              1 call.
-              <br />
-              Seconds
-              <br />
-              to react.
+            <div className="testi__text">
+              <div className="kicker">The problem</div>
+              <div className="big">
+                3 tabs.
+                <br />
+                1 call.
+                <br />
+                Seconds
+                <br />
+                to react.
+              </div>
             </div>
           </div>
           <div>

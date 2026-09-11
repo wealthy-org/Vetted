@@ -179,16 +179,44 @@ nav.main { display:flex; align-items:center; justify-content:space-between; padd
 
 /* green diagonal problem-statement section */
 .testi { position:relative; background:#fff; padding: 90px 0; overflow:hidden; }
-.testi::before { content:""; position:absolute; left:0; top:0; bottom:0; width:min(38%, 420px); background: var(--green); clip-path: polygon(0 0, 100% 0, 78% 100%, 0% 100%); }
 .testi__inner { position:relative; display:grid; grid-template-columns: minmax(220px,300px) 1fr; gap:50px; }
-.testi__mark { display:flex; flex-direction:column; justify-content:center; z-index:1; color:#fff; max-width:230px; }
+/* The green panel is attached to .testi__mark itself instead of being
+   positioned relative to the full viewport width. The old version
+   measured its width from the browser edge while .wrap (and the text)
+   is centered with a max-width, so on wide viewports they drifted apart
+   entirely and the white text landed on plain white background.
+   --testi-offset is how far .wrap's content edge sits from the true
+   viewport edge (0 once the viewport is narrower than .wrap's max-width,
+   via max()); expressed in vw/px (never %) because percentage margins on
+   a grid item resolve against its own grid-cell width, not .wrap's. */
+.testi__mark {
+  --testi-offset: max(32px, calc((100vw - 1120px) / 2 + 32px));
+  position:relative; display:flex; flex-direction:column; justify-content:center;
+  z-index:1; color:#fff;
+  margin: -90px 0 -90px calc(-1 * var(--testi-offset));
+  padding: 90px 40px 90px var(--testi-offset);
+}
+/* max-width belongs on the text only — .testi__mark itself is the full
+   panel (huge padding to reach the viewport edge), and border-box means
+   capping its own max-width would cap padding + content together,
+   crushing the panel down to ~230px total instead of just wrapping text. */
+.testi__text { max-width:230px; }
+.testi__mark::before {
+  content:""; position:absolute; inset:0; z-index:-1;
+  background: var(--green);
+  clip-path: polygon(0 0, 100% 0, 78% 100%, 0% 100%);
+}
 .testi__mark .kicker { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; opacity:.85; margin-bottom:10px; }
 .testi__mark .big { font-size:clamp(26px,3vw,38px); font-weight:800; line-height:1.08; }
 .testi h2 { font-size:28px; margin-bottom:28px; }
 .quote { border-bottom:1px solid var(--line); padding:20px 0; font-size:15px; }
 .quote b { display:block; margin-bottom:6px; }
 .quote span { color: var(--gray); font-size:13px; }
-@media (max-width:820px){ .testi__inner{ grid-template-columns:1fr; } .testi::before{ width:100%; height:180px; bottom:auto; clip-path: polygon(0 0, 100% 0, 100% 78%, 0 100%); } .testi__mark{ max-width:none; padding-bottom:40px; } }
+@media (max-width:820px){
+  .testi__inner{ grid-template-columns:1fr; }
+  .testi__mark{ max-width:none; margin:-90px calc(-1 * var(--testi-offset)) 0; padding:40px 32px 60px; }
+  .testi__mark::before{ clip-path: polygon(0 0, 100% 0, 100% 82%, 0 100%); }
+}
 
 /* logos row */
 .logos { padding: 60px 0; text-align:center; }
