@@ -2,8 +2,8 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { UserProvider } from "./UserContext";
 
@@ -14,9 +14,6 @@ const WalletMultiButton = dynamic(
     ),
   { ssr: false }
 );
-
-const AUTH_KEY = "vetted_wallet_authed";
-const ADDRESS_KEY = "vetted_wallet_address";
 
 const ICONS = {
   feed: (
@@ -63,68 +60,31 @@ const NAV_ITEMS = [
 ];
 
 export default function DashboardShell({ children }) {
-  const { connected, connecting, publicKey } = useWallet();
+  // Access to every /dashboard page is already enforced server-side by
+  // middleware.js, which checks the signed session cookie before any page
+  // renders. This component no longer needs to gate anything itself — it
+  // only reflects wallet connection state for the UI (address chip) and
+  // clears the session if the user disconnects their wallet.
+  const { connected, publicKey } = useWallet();
   const pathname = usePathname();
-
-  // Trust a previous session immediately (no flash, no gate) if we saw a
-  // successful connect before — wallet-adapter's own autoConnect is async
-  // and would otherwise briefly (or, if it's slow/fails silently, forever)
-  // report "disconnected" right after a reload even though the user is
-  // still actually logged in.
-  // Starts false on both server and client to avoid a hydration mismatch;
-  // read from localStorage right after mount instead of during render.
-  const [trusted, setTrusted] = useState(false);
+  const router = useRouter();
   const wasConnectedThisSession = useRef(false);
 
   useEffect(() => {
-    if (localStorage.getItem(AUTH_KEY) === "1") {
-      setTrusted(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (connected && publicKey) {
+    if (connected) {
       wasConnectedThisSession.current = true;
-      setTrusted(true);
-      localStorage.setItem(AUTH_KEY, "1");
-      localStorage.setItem(ADDRESS_KEY, publicKey.toBase58());
       return;
     }
-
-    // Only clear the saved session if the wallet was actually connected
-    // earlier in THIS session and then dropped (e.g. user hit Disconnect,
-    // or switched/locked the wallet) — never just because autoConnect
-    // hasn't finished (or gave up) restoring it after a fresh page load.
-    if (!connected && !connecting && wasConnectedThisSession.current) {
+    if (!connected && wasConnectedThisSession.current) {
       wasConnectedThisSession.current = false;
-      setTrusted(false);
-      localStorage.removeItem(AUTH_KEY);
-      localStorage.removeItem(ADDRESS_KEY);
+      fetch("/api/auth/logout", { method: "POST" }).finally(() => {
+        router.push("/");
+      });
     }
-  }, [connected, connecting, publicKey]);
-
-  const showDashboard = connected || trusted;
-
-  if (!showDashboard) {
-    return (
-      <div className="gate">
-        <div className="gate__card">
-          <img src="/logo-1.png" alt="Vetted logo" className="gate__logo" />
-          <h1>Connect Phantom to continue</h1>
-          <p>
-            Vetted uses your wallet only to verify you&apos;re a real trader —
-            no approvals, no token access, just a signature.
-          </p>
-          <WalletMultiButton />
-        </div>
-      </div>
-    );
-  }
+  }, [connected, router]);
 
   const current = NAV_ITEMS.find((i) => i.href === pathname);
-  const walletAddress =
-    publicKey?.toBase58() ??
-    (typeof window !== "undefined" ? localStorage.getItem(ADDRESS_KEY) : null);
+  const walletAddress = publicKey?.toBase58() ?? null;
 
   return (
     <UserProvider>

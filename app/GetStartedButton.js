@@ -4,31 +4,44 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { useWalletAuth } from "@/lib/useWalletAuth";
 
-// Skips the /dashboard gate screen entirely: clicking this opens the
-// wallet-select modal right here on the landing page, and once a wallet
-// actually connects, sends the user straight into the dashboard.
 export default function GetStartedButton({ className, style, children }) {
   const { connected } = useWallet();
   const { setVisible } = useWalletModal();
+  const { authenticate, status } = useWalletAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (connected) {
-      router.push("/dashboard");
-    }
-  }, [connected, router]);
+    if (!connected || status !== "idle") return;
+    authenticate().then((ok) => {
+      if (ok) router.push("/dashboard");
+    });
+  }, [connected, status, authenticate, router]);
 
   function handleClick(e) {
+    e.preventDefault();
     if (!connected) {
-      e.preventDefault();
       setVisible(true);
+      return;
+    }
+    if (status === "error") {
+      authenticate().then((ok) => {
+        if (ok) router.push("/dashboard");
+      });
     }
   }
 
+  const label =
+    status === "signing"
+      ? "Confirm in wallet…"
+      : status === "error"
+      ? "Signature failed — click to retry"
+      : children;
+
   return (
     <a href="/dashboard" className={className} style={style} onClick={handleClick}>
-      {children}
+      {label}
     </a>
   );
 }
