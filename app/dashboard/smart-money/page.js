@@ -55,7 +55,8 @@ function BoltIcon({ size = 13 }) {
 }
 
 export default async function SmartMoneyPage({ searchParams }) {
-  const page = Math.max(1, parseInt(searchParams?.page, 10) || 1);
+  const params = await searchParams;
+  const page = Math.max(1, parseInt(params?.page, 10) || 1);
   const { rows, stats } = await getActivities(page);
   const totalPages = Math.max(1, Math.ceil(stats.total / PAGE_SIZE));
 

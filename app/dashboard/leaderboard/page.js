@@ -23,7 +23,8 @@ async function getLeaderboard(page) {
 }
 
 export default async function LeaderboardPage({ searchParams }) {
-  const page = Math.max(1, parseInt(searchParams?.page, 10) || 1);
+  const params = await searchParams;
+  const page = Math.max(1, parseInt(params?.page, 10) || 1);
   const { rows, total } = await getLeaderboard(page);
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const rankOffset = (page - 1) * PAGE_SIZE;

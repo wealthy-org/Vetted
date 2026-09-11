@@ -81,7 +81,8 @@ function shorten(addr) {
   return `${addr.slice(0, 4)}...${addr.slice(-4)}`;
 }
 
-export default async function TokenDetailPage({ params }) {
+export default async function TokenDetailPage({ params: paramsPromise }) {
+  const params = await paramsPromise;
   const token = await getToken(params.address);
 
   if (!token) {

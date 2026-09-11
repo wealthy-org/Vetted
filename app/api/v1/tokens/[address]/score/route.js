@@ -3,7 +3,7 @@ import { sql } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export async function GET(request, { params }) {
-  const { address } = params;
+  const { address } = await params;
 
   const rows = await sql`
     select address, chain, symbol, risk_score, liquidity, tax_buy, tax_sell, is_honeypot, holder_count, last_updated

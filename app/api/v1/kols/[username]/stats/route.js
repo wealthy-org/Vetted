@@ -3,7 +3,7 @@ import { sql } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export async function GET(request, { params }) {
-  const { username } = params;
+  const { username } = await params;
 
   const rows = await sql`
     select k.x_username, k.display_name, s.win_rate, s.avg_return, s.total_calls, s.updated_at

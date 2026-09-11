@@ -99,9 +99,10 @@ async function getCalls(chain, minScore, page) {
 }
 
 export default async function DashboardPage({ searchParams }) {
-  const chain = searchParams?.chain; // "solana" | "evm" | undefined
-  const minScore = searchParams?.minScore === "50";
-  const page = Math.max(1, parseInt(searchParams?.page, 10) || 1);
+  const params = await searchParams;
+  const chain = params?.chain; // "solana" | "evm" | undefined
+  const minScore = params?.minScore === "50";
+  const page = Math.max(1, parseInt(params?.page, 10) || 1);
 
   const { rows: calls, stats } = await getCalls(chain, minScore, page);
 

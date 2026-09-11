@@ -29,7 +29,8 @@ function initials(str) {
   return str?.slice(0, 2).toUpperCase() ?? "??";
 }
 
-export default async function KolDetailPage({ params }) {
+export default async function KolDetailPage({ params: paramsPromise }) {
+  const params = await paramsPromise;
   const kol = await getKol(params.username);
 
   if (!kol) {
