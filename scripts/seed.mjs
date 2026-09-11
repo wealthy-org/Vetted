@@ -110,6 +110,11 @@ const tokens = [
   { address: "0xc00e94Cb662C3520282E6f5717214004A7f26888", chain: "ethereum", name: "Compound", symbol: "COMP", liquidity: 139231, taxBuy: 0, taxSell: 0, holders: 95000, honeypot: false, multiplier: 1.1 },
   // taxBuy/taxSell/holders below are fallbacks only — real values (1.99%/1.9% tax) come from GoPlus at seed time, verified separately.
   { address: "0xA2b4C0Af19cC16a6CfAcCe81F192B024d625817D", chain: "ethereum", name: "Kishu Inu", symbol: "KISHU", liquidity: 959867, taxBuy: 2, taxSell: 2, holders: 281356, honeypot: false, multiplier: 0.35 },
+  // Robinhood chain (GoPlus id 4663) — currently trending, lots of
+  // copycat "Robinhood"-named tokens exploiting the hype. This one is a
+  // real example of the risk this product is meant to catch: $757K
+  // liquidity but only 11 real holders (verified via GoPlus).
+  { address: "0x99A90B1218419c62A2Fa7E427284C6c7D058d47a", chain: "robinhood", name: "Robinhood", symbol: "ROBINHOOD", liquidity: 756991, taxBuy: 0, taxSell: 0, holders: 11, honeypot: false, multiplier: 0.15 },
 ];
 
 const wallets = [
