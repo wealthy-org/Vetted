@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./public/banner.png" alt="Vetted banner" width="100%" />
+</p>
+
 # Vetted
 
 Alpha intelligence for crypto traders — track KOL calls on X, auto-validate
