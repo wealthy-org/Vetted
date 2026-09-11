@@ -5,6 +5,7 @@ import TokenIcon from "../../TokenIcon";
 import CopyButton from "../../CopyButton";
 import Sparkline from "../../Sparkline";
 import { explorerFor } from "@/lib/explorer";
+import { chainLabel } from "@/lib/chains";
 
 export const dynamic = "force-dynamic";
 
@@ -123,8 +124,8 @@ export default async function TokenDetailPage({ params }) {
             ${token.symbol} <span className="dp__muted">· {token.name}</span>
           </h1>
           <div className="td__addr-row">
-            <span className="dp__chain" style={{ fontSize: 13, textTransform: "capitalize" }}>
-              {token.chain}
+            <span className="dp__chain" style={{ fontSize: 13 }}>
+              {chainLabel(token.chain)}
             </span>
             <span className="dp__muted" style={{ fontSize: 13 }}>·</span>
             {explorer ? (

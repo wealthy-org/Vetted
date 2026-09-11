@@ -3,6 +3,7 @@ import { sql } from "@/lib/db";
 import AddToWatchlistButton from "./AddToWatchlistButton";
 import TokenIcon from "./TokenIcon";
 import Pagination from "./Pagination";
+import { chainLabel } from "@/lib/chains";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ function initials(str) {
   return str?.slice(0, 2).toUpperCase() ?? "??";
 }
 
+
 function filterHref(current, patch) {
   const params = new URLSearchParams(current);
   for (const [key, value] of Object.entries(patch)) {
@@ -49,7 +51,11 @@ function buildWhere(chain, minScore) {
     conditions.push(`t.chain = $${params.length}`);
   } else if (chain === "evm") {
     params.push("solana");
-    conditions.push(`t.chain != $${params.length}`);
+    params.push("robinhood");
+    conditions.push(`t.chain != $${params.length - 1} and t.chain != $${params.length}`);
+  } else if (chain === "robinhood") {
+    params.push("robinhood");
+    conditions.push(`t.chain = $${params.length}`);
   }
   if (minScore) {
     conditions.push(`t.risk_score >= 50`);
@@ -151,6 +157,12 @@ export default async function DashboardPage({ searchParams }) {
           EVM
         </Link>
         <Link
+          href={filterHref(current, { chain: "robinhood" })}
+          className={`dp__filter ${chain === "robinhood" ? "active" : ""}`}
+        >
+          Robinhood
+        </Link>
+        <Link
           href={filterHref(current, { minScore: minScore ? null : "50" })}
           className={`dp__filter ${minScore ? "active" : ""}`}
         >
@@ -199,7 +211,7 @@ export default async function DashboardPage({ searchParams }) {
                     <TokenIcon chain={c.chain} address={c.token_address} symbol={c.token} />
                     <span>
                       <span className="dp__token">${c.token}</span>
-                      <span className="dp__chain">{c.chain}</span>
+                      <span className="dp__chain">{chainLabel(c.chain)}</span>
                     </span>
                   </span>
                   <span className="dp__muted">{timeAgo(c.called_at)}</span>

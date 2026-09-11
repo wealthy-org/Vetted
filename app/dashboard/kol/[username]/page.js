@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { sql } from "@/lib/db";
+import { chainLabel } from "@/lib/chains";
 
 export const dynamic = "force-dynamic";
 
@@ -110,7 +111,7 @@ export default async function KolDetailPage({ params }) {
                 style={{ gridTemplateColumns: "1fr 0.8fr 1fr 1fr 1fr" }}
               >
                 <span className="dp__token">${c.symbol}</span>
-                <span className="dp__muted">{c.chain}</span>
+                <span className="dp__muted">{chainLabel(c.chain)}</span>
                 <span className="dp__muted">{new Date(c.called_at).toLocaleDateString()}</span>
                 <span>
                   <span className={`pill ${c.risk_score >= 50 ? "pill--ok" : "pill--warn"}`}>
