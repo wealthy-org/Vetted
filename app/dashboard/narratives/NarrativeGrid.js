@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import TokenIcon from "../TokenIcon";
+import { chainLabel } from "@/lib/chains";
 
 const TAG_ICONS = {
   "dog coins": (
@@ -48,7 +49,6 @@ function fmtUsd(n) {
 
 export default function NarrativeGrid({ rows }) {
   const [openTag, setOpenTag] = useState(null);
-  const max = Math.max(1, ...rows.map((r) => Number(r.token_count)));
 
   return (
     <div className="nlist">
@@ -69,13 +69,6 @@ export default function NarrativeGrid({ rows }) {
                 <span className="dp__muted" style={{ fontSize: 12 }}>
                   {fmtUsd(r.total_volume)} volume · week of {new Date(r.week_start).toLocaleDateString()}
                 </span>
-              </span>
-
-              <span className="nlist-bar" title={`${r.token_count} of ${max} tokens in the largest category`}>
-                <span
-                  className="nlist-bar__fill"
-                  style={{ width: `${(Number(r.token_count) / max) * 100}%` }}
-                />
               </span>
 
               <span className="nlist-count">
@@ -106,7 +99,7 @@ export default function NarrativeGrid({ rows }) {
                     <TokenIcon chain={t.chain} address={t.address} symbol={t.symbol} size={24} />
                     <span className="nlist-token__info">
                       <span className="dp__token">${t.symbol}</span>
-                      <span className="dp__chain">{t.chain}</span>
+                      <span className="nlist-token__chain">{chainLabel(t.chain)}</span>
                     </span>
                     <span className="dp__muted" style={{ fontSize: 12.5 }}>
                       {fmtUsd(t.liquidity)}
