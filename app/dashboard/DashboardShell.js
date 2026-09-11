@@ -56,7 +56,6 @@ const NAV_ITEMS = [
   { href: "/dashboard/watchlist", label: "Watchlist", icon: "watchlist" },
   { href: "/dashboard/smart-money", label: "Smart Money", icon: "smartMoney" },
   { href: "/dashboard/narratives", label: "Narratives", icon: "narratives" },
-  { href: "/dashboard/settings", label: "Settings", icon: "settings" },
 ];
 
 export default function DashboardShell({ children }) {
