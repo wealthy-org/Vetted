@@ -14,9 +14,29 @@ export default function GetStartedButton({ className, style, children }) {
 
   useEffect(() => {
     if (!connected || status !== "idle") return;
-    authenticate().then((ok) => {
-      if (ok) router.push("/dashboard");
+
+    let cancelled = false;
+
+    // wallet-adapter's autoConnect re-connects the wallet on every page
+    // load, including back on the landing page after a user already
+    // signed in earlier. Without this check we'd fire a brand new sign
+    // request every single time — check for an existing valid session
+    // first, and only fall through to the nonce+sign+verify flow if
+    // there genuinely isn't one yet.
+    fetch("/api/auth/session").then((res) => {
+      if (cancelled) return;
+      if (res.ok) {
+        router.push("/dashboard");
+        return;
+      }
+      authenticate().then((ok) => {
+        if (ok) router.push("/dashboard");
+      });
     });
+
+    return () => {
+      cancelled = true;
+    };
   }, [connected, status, authenticate, router]);
 
   function handleClick(e) {
