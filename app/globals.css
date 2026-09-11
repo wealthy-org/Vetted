@@ -415,6 +415,7 @@ footer { background: var(--ink); color:#9a9ab8; padding: 56px 0 32px; }
 .nlist-icon { width:20px; height:20px; color:var(--purple); display:flex; flex:none; }
 .nlist-icon svg { width:100%; height:100%; }
 .nlist-name { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.nlist-badge { display:inline-flex; align-items:center; gap:3px; margin-left:8px; font-size:10.5px; font-weight:700; text-transform:none; color:#c2410c; background:#fff1e8; border:1px solid #ffddc7; border-radius:999px; padding:2px 8px; vertical-align:middle; }
 .nlist-count { color:var(--gray); font-size:12.5px; font-weight:600; text-align:right; white-space:nowrap; }
 .nlist-chevron { color:var(--gray); flex:none; transition:transform .2s ease; justify-self:end; }
 .nlist-chevron.open { transform:rotate(180deg); color:var(--purple); }

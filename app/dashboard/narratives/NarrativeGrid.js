@@ -153,8 +153,24 @@ function fmtUsd(n) {
   return `$${Number(n).toLocaleString("en-US")}`;
 }
 
+// Top 3 by volume this week, excluding "uncategorized" (it's a fallback
+// bucket, not a real narrative/meta — tagging it "Hot" would be
+// misleading even though it currently has the most volume). This is a
+// same-week ranking, not week-over-week growth: we only have one week
+// of narratives snapshots right now, so a genuine "Trending" badge
+// (requires comparing against last week) isn't honestly computable yet.
+function getHotTags(rows) {
+  return rows
+    .filter((r) => r.tag !== "uncategorized")
+    .slice()
+    .sort((a, b) => Number(b.total_volume) - Number(a.total_volume))
+    .slice(0, 3)
+    .map((r) => r.tag);
+}
+
 export default function NarrativeGrid({ rows }) {
   const [openTag, setOpenTag] = useState(null);
+  const hotTags = getHotTags(rows);
 
   return (
     <div className="nlist">
@@ -171,7 +187,14 @@ export default function NarrativeGrid({ rows }) {
               <span className="nlist-icon">{TAG_ICONS[r.tag] ?? TAG_ICONS.uncategorized}</span>
 
               <span className="nlist-name">
-                <b style={{ textTransform: "capitalize" }}>{r.tag}</b>
+                <b style={{ textTransform: "capitalize" }}>
+                  {r.tag}
+                  {hotTags.includes(r.tag) && (
+                    <span className="nlist-badge" title="Highest volume this week">
+                      Hot
+                    </span>
+                  )}
+                </b>
                 <span className="dp__muted" style={{ fontSize: 12 }}>
                   {fmtUsd(r.total_volume)} volume · week of {new Date(r.week_start).toLocaleDateString()}
                 </span>
