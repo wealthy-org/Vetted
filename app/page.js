@@ -49,11 +49,6 @@ export default function Home() {
           <section className="hero">
             <div>
               <div className="hero__eyebrow">
-                <span className="avatars">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </span>
                 Built for traders who verify before they ape
               </div>
               <h1>
