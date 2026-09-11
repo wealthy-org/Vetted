@@ -8,7 +8,7 @@ async function getNarratives() {
     select tag, token_count, total_volume, week_start
     from narratives
     order by week_start desc, token_count desc
-    limit 20
+    limit 50
   `;
 
   const tags = narratives.map((n) => n.tag);
